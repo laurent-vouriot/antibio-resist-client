@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+    <title> Prédiction résistance aux antibiotiques </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>  
+
+    <link rel="stylesheet" href="{{url_for('.static', filename='style.css')}}" type="text/css">
+</head>
+<body> 
+    
+
+    {% include 'header.html' %}
+
+    <main class='container'>
+        <div class='row justify-content-center px-5 my-5'>
+            <p class='text-justify'>
+                Introdcution  : Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+            </p> 
+        </div>
+        <div class='row justify-content-center mx-4 py-3'>
+            {% if error == True %}
+            <div class="row alert alert-danger d-flex align-items-center" role="alert">
+                Pas assez d'éléments pour la prédiction il faut au moins remplir les champs : Service et Prélèvement.
+            </div>
+            {% endif %}
+
+    <style>
+    .dropbtn {
+      background-color: #04AA6D;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .dropbtn:hover, .dropbtn:focus {
+      background-color: #3e8e41;
+    }
+
+#myInput {
+      box-sizing: border-box;
+      background-image: url('searchicon.png');
+      background-position: 14px 12px;
+      background-repeat: no-repeat;
+      font-size: 16px;
+      padding: 14px 20px 12px 45px;
+      border: none;
+      border-bottom: 1px solid #ddd;
+    }
+
+#myInput:focus {outline: 3px solid #ddd;}
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f6f6f6;
+      min-width: 230px;
+      overflow: auto;
+      border: 1px solid #ddd;
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown a:hover {background-color: #ddd;}
+
+    .show {display: block;}
+    </style>
+
+
+
+
+
+
+
+
+                {% for col_name in data.columns %} 
+                    <div class='row justify-content-center my-3 form-floating'>
+                        <div class="dropdown">
+                            <button onclick="myFunction()" class="dropbtn"> {{col_name}}</button>
+
+                                <form name='form' method='POST' class='container-fluid'>
+                                <div id="myDropdown" class="dropdown-content">
+
+                                    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                                    {% for val in data[col_name].dropna() %}
+                                    <a href='#{{val}}'> {{val}}  </a>
+                                    {% endfor %}
+
+                              </div>
+                                
+                {%endfor%}
+                                </form>
+                                <div class='row justify-content-center my-3'>
+                                        <input type='submit' value='Envoyer' class='col-5 my-3 btn btn-outline-primary btn-lg' />
+                                </div>
+
+
+                            </div>
+                    </div>      
+
+
+
+        </div> 
+    </main> 
+    
+    {% include 'footer.html' %}
+
+    <script>
+    /* When the user clicks on the button,
+    toggle between hiding and showing the dropdown content */
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    function filterFunction() {
+      var input, filter, ul, li, a, i;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      div = document.getElementById("myDropdown");
+      a = div.getElementsByTagName("a");
+      for (i = 0; i < a.length; i++) {
+        txtValue = a[i].textContent || a[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          a[i].style.display = "";
+        } else {
+          a[i].style.display = "none";
+        }
+      }
+    }
+    </script>
+
+
+</body>
+</html>

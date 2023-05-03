@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+    <title> Prédiction résistance aux antibiotiques </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>  
+
+    <link rel="stylesheet" href="{{url_for('.static', filename='style.css')}}" type="text/css">
+</head>
+<body> 
+    
+
+    {% include 'header.html' %}
+
+    <main class='container'>
+        <div class='row justify-content-center px-5 my-5'>
+            <p class='text-justify'>
+                Introdcution  : Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+            </p> 
+        </div>
+        <div class='row justify-content-center mx-4 py-3'>
+            {% if error == True %}
+            <div class="row alert alert-danger d-flex align-items-center" role="alert">
+                Pas assez d'éléments pour la prédiction il faut au moins remplir les champs : Service et Prélèvement.
+            </div>
+            {% endif %}
+
+
+
+
+
+
+            <form name='form' method='POST' class='container-fluid'>
+                {% for col_name in data.columns %} 
+                    <div class='row justify-content-center my-3 form-floating'>
+
+                    {% if col_name in err_data %}
+                    <select name='{{col_name}}' class='col-10 my-2 custom-select-lg mb-3 form-select is-invalid' id="floatingSelect{{col_name}}">
+                    {% else %}
+
+                    <select name='{{col_name}}' class='col-10 my-2 custom-select-lg mb-3 form-select' id="floatingSelect{{col_name}}">
+                    {% endif %}
+                        {% if col_name == 'BMR_ATCD' %}
+                        <option value="--Pas d'informations--" selected>--Pas d'informations--</option>
+                        {% else %}
+                        <option value='' selected>--Pas d'informations--</option>
+                        {% endif %}
+                        {% for val in data[col_name].dropna()%}
+                        <option value='{{val}}'>{{val}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingSelect{{col_name}}">{{col_name}}</label>
+                </div>
+                {% endfor %}
+                 <div class='row justify-content-center my-3'>
+                     <input type='submit' value='Envoyer' class='col-5 my-3 btn btn-outline-primary btn-lg' />
+                </div>
+          
+            </form>
+
+
+
+
+
+
+
+
+
+
+
+        </div> 
+    </main> 
+    
+    {% include 'footer.html' %}
+
+</body>
+</html>
